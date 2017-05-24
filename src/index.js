@@ -1,5 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TodoApp from './TodoApp';
+import TodoModel from './TodoModel';
 
-ReactDOM.render(<TodoApp />, document.getElementById('root'));
+let model = new TodoModel();
+function render() {
+    ReactDOM.render(<TodoApp model={model} />, document.getElementById('root'));
+}
+model.subscribe(render);
+render();
