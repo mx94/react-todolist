@@ -13,42 +13,8 @@ class TodoApp extends Component {
         };
     }
 
-    clearCompleted = () => {
-        let todos = this.state.todos;
-        todos = todos.filter(todo => !todo.completed);
-        this.setState({todos});
-    }
-
     changeFilterType = (filterType) => {
         this.setState({filterType});
-    }
-
-    toggleAll = (event) => {
-        let checked = event.target.checked;
-        let todos = this.state.todos;
-        todos.map(todo => {
-            todo.completed = checked;
-            return todo;
-        });
-        this.setState({todos});
-    }
-
-    remove = (id) => {
-        let todos = this.state.todos;
-        let index = todos.findIndex(todo => todo.id === id);
-        todos.splice(index, 1);
-        this.setState({todos});
-    }
-
-    toggle = (id) => {
-        let todos = this.state.todos;
-        todos.map(todo => {
-            if (todo.id === id) {
-                todo.completed = !todo.completed;
-            }
-            return todo;
-        });
-        this.setState({todos});
     }
 
     render() {
@@ -73,14 +39,14 @@ class TodoApp extends Component {
                             <input
                                 type="checkbox"
                                 checked={activeTodoCount === 0}
-                                onChange={this.toggleAll}
+                                onChange={this.props.model.toggleAll}
                             />
                             <span>{activeTodoCount === 0 ? ' 全部取消' : ' 全部选中'}</span>
                         </li> : null
                 }
                 {
-                    showTodos.map((todo, index) => <TodoItem key={index} todo={todo} toggle={this.toggle}
-                                                             remove={this.remove}/>)
+                    showTodos.map((todo, index) => <TodoItem key={index} todo={todo} toggle={this.props.model.toggle}
+                                                             remove={this.props.model.remove}/>)
                 }
             </ul>
         );
@@ -100,7 +66,7 @@ class TodoApp extends Component {
                                     activeTodoCount={activeTodoCount}
                                     changeFilterType={this.changeFilterType}
                                     filterType={this.state.filterType}
-                                    clearCompleted={this.clearCompleted}
+                                    clearCompleted={this.props.model.clearCompleted}
                                     completedTodoCount={completedTodoCount}/>
                             </div>
                         </div>
