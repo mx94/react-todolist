@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import TodoHeader from "./TodoHeader";
 import TodoItem from "./TodoItem";
 import TodoFooter from "./TodoFooter";
-import * as filterTypes from './filter-types';
+import * as FilterTypes from './filter-types';
 require('bootstrap/dist/css/bootstrap.css');
 
 class TodoApp extends Component {
@@ -10,8 +10,12 @@ class TodoApp extends Component {
         super(props);
         this.state = {
             todos: [],
-            filterType: filterTypes.ACTIVE
+            filterType: FilterTypes.ALL
         };
+    }
+
+    changeFilterType = (filterType) => {
+        this.setState({filterType});
     }
 
     toggleAll = (event) => {
@@ -54,9 +58,9 @@ class TodoApp extends Component {
         let activeTodoCount = todos.reduce((count, todo) => count + (todo.completed ? 0 : 1), 0);
         let showTodos = todos.filter(todo => {
             switch (this.state.filterType) {
-                case filterTypes.ACTIVE:
+                case FilterTypes.ACTIVE:
                     return !todo.completed;
-                case filterTypes.COMPLETED:
+                case FilterTypes.COMPLETED:
                     return todo.completed;
                 default:
                     return true;
@@ -93,7 +97,7 @@ class TodoApp extends Component {
                                 {main}
                             </div>
                             <div className="panel-footer">
-                                <TodoFooter activeTodoCount={activeTodoCount}/>
+                                <TodoFooter activeTodoCount={activeTodoCount} changeFilterType={this.changeFilterType} filterType={this.state.filterType} />
                             </div>
                         </div>
                     </div>
