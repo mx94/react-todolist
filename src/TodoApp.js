@@ -9,16 +9,39 @@ class TodoApp extends Component {
         this.state = {
             todos: [
                 {
-                    id: Date.now(),
+                    id: Math.random(),
                     title: '回家洗澡吃饭睡觉打豆豆',
                     completed: false
+                },
+                {
+                    id: Math.random(),
+                    title: '教练我要打篮球',
+                    completed: true
                 }
             ]
         };
     }
 
+    remove = (id) => {
+        let todos = this.state.todos;
+        let index = todos.findIndex(todo => todo.id === id);
+        todos.splice(index, 1);
+        this.setState({todos});
+    }
+
+    toggle = (id) => {
+        let todos = this.state.todos;
+        todos.map(todo => {
+            if (todo.id === id) {
+                todo.completed = !todo.completed;
+            }
+            return todo;
+        });
+        this.setState({todos});
+    }
+
     addTodo = (todo) => {
-        todo = Object.assign({}, {id: Date.now(), completed: false}, todo);
+        todo = Object.assign({}, {id: Math.random(), completed: false}, todo);
         let todos = this.state.todos;
         todos.push(todo);
         this.setState({todos});
@@ -28,7 +51,7 @@ class TodoApp extends Component {
         let main = (
             <ul className="list-group">
                 {
-                    this.state.todos.map((todo, index) => <TodoItem key={index} todo={todo} />)
+                    this.state.todos.map((todo, index) => <TodoItem key={index} todo={todo} toggle={this.toggle} remove={this.remove} />)
                 }
             </ul>
         );
