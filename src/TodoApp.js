@@ -1,25 +1,27 @@
 import React, {Component} from 'react';
 import TodoHeader from "./TodoHeader";
 import TodoItem from "./TodoItem";
+import TodoFooter from "./TodoFooter";
+import * as filterTypes from './filter-types';
 require('bootstrap/dist/css/bootstrap.css');
 
 class TodoApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            todos: [
-                {
-                    id: Math.random(),
-                    title: '回家洗澡吃饭睡觉打豆豆',
-                    completed: false
-                },
-                {
-                    id: Math.random(),
-                    title: '教练我要打篮球',
-                    completed: true
-                }
-            ]
+            todos: [],
+            filterType: filterTypes.ACTIVE
         };
+    }
+
+    toggleAll = (event) => {
+        let checked = event.target.checked;
+        let todos = this.state.todos;
+        todos.map(todo => {
+            todo.completed = checked;
+            return todo;
+        });
+        this.setState({todos});
     }
 
     remove = (id) => {
@@ -48,10 +50,34 @@ class TodoApp extends Component {
     }
 
     render() {
+        let todos = this.state.todos;
+        let activeTodoCount = todos.reduce((count, todo) => count + (todo.completed ? 0 : 1), 0);
+        let showTodos = todos.filter(todo => {
+            switch (this.state.filterType) {
+                case filterTypes.ACTIVE:
+                    return !todo.completed;
+                case filterTypes.COMPLETED:
+                    return todo.completed;
+                default:
+                    return true;
+            }
+        });
         let main = (
             <ul className="list-group">
                 {
-                    this.state.todos.map((todo, index) => <TodoItem key={index} todo={todo} toggle={this.toggle} remove={this.remove} />)
+                    showTodos.length > 0 ?
+                        <li className="list-group-item">
+                            <input
+                                type="checkbox"
+                                checked={activeTodoCount === 0}
+                                onChange={this.toggleAll}
+                            />
+                            {activeTodoCount === 0 ? '全部取消' : '全部选中'}
+                        </li> : null
+                }
+                {
+                    showTodos.map((todo, index) => <TodoItem key={index} todo={todo} toggle={this.toggle}
+                                                                    remove={this.remove}/>)
                 }
             </ul>
         );
@@ -61,12 +87,14 @@ class TodoApp extends Component {
                     <div className="col-md-6 col-md-offset-3">
                         <div className="panel panel-default">
                             <div className="panel-heading">
-                                <TodoHeader addTodo={this.addTodo} />
+                                <TodoHeader addTodo={this.addTodo}/>
                             </div>
                             <div className="panel-body">
                                 {main}
                             </div>
-                            <div className="panel-footer"></div>
+                            <div className="panel-footer">
+                                <TodoFooter activeTodoCount={activeTodoCount}/>
+                            </div>
                         </div>
                     </div>
                 </div>
