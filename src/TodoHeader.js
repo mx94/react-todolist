@@ -16,7 +16,9 @@ export default class TodoHeader extends Component {
                 type="text"
                 className="form-control"
                 autoFocus={true}
-                onKeyDown={this.handleKeyDown} />
+                onKeyDown={this.handleKeyDown}
+                placeholder="输入的你的计划吧..."
+            />
         )
     }
 }

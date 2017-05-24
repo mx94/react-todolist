@@ -14,6 +14,12 @@ class TodoApp extends Component {
         };
     }
 
+    clearCompleted = () => {
+        let todos = this.state.todos;
+        todos = todos.filter(todo => !todo.completed);
+        this.setState({todos});
+    }
+
     changeFilterType = (filterType) => {
         this.setState({filterType});
     }
@@ -56,6 +62,7 @@ class TodoApp extends Component {
     render() {
         let todos = this.state.todos;
         let activeTodoCount = todos.reduce((count, todo) => count + (todo.completed ? 0 : 1), 0);
+        let completedTodoCount = todos.length - activeTodoCount;
         let showTodos = todos.filter(todo => {
             switch (this.state.filterType) {
                 case FilterTypes.ACTIVE:
@@ -76,12 +83,12 @@ class TodoApp extends Component {
                                 checked={activeTodoCount === 0}
                                 onChange={this.toggleAll}
                             />
-                            {activeTodoCount === 0 ? '全部取消' : '全部选中'}
+                            <span>{activeTodoCount === 0 ? ' 全部取消' : ' 全部选中'}</span>
                         </li> : null
                 }
                 {
                     showTodos.map((todo, index) => <TodoItem key={index} todo={todo} toggle={this.toggle}
-                                                                    remove={this.remove}/>)
+                                                             remove={this.remove}/>)
                 }
             </ul>
         );
@@ -97,7 +104,12 @@ class TodoApp extends Component {
                                 {main}
                             </div>
                             <div className="panel-footer">
-                                <TodoFooter activeTodoCount={activeTodoCount} changeFilterType={this.changeFilterType} filterType={this.state.filterType} />
+                                <TodoFooter
+                                    activeTodoCount={activeTodoCount}
+                                    changeFilterType={this.changeFilterType}
+                                    filterType={this.state.filterType}
+                                    clearCompleted={this.clearCompleted}
+                                    completedTodoCount={completedTodoCount}/>
                             </div>
                         </div>
                     </div>
