@@ -34,7 +34,7 @@ class TodoApp extends Component {
         let main = (
             <ul className="list-group">
                 {
-                    showTodos.length > 0 ?
+                    showTodos.length > 0 &&
                         <li className="list-group-item">
                             <input
                                 type="checkbox"
@@ -42,7 +42,7 @@ class TodoApp extends Component {
                                 onChange={this.props.model.toggleAll}
                             />
                             <span>{activeTodoCount === 0 ? ' 全部取消' : ' 全部选中'}</span>
-                        </li> : null
+                        </li>
                 }
                 {
                     showTodos.map((todo, index) => <TodoItem key={index} todo={todo} toggle={this.props.model.toggle}

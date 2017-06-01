@@ -7,7 +7,7 @@ export default class TodoFooter extends React.Component {
             <div className="row">
                 <div className="col-sm-3 text-left">
                     {
-                        this.props.activeTodoCount ? <span className="badge" style={{backgroundColor: 'deepSkyBlue'}} >你还有 {this.props.activeTodoCount} 件待办事项</span> : null
+                        this.props.activeTodoCount > 0 && <span className="badge" style={{backgroundColor: 'deepSkyBlue'}} >你还有 {this.props.activeTodoCount} 件待办事项</span>
                     }
                 </div>
                 <div className="col-sm-6 text-center">
