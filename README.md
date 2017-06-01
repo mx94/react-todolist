@@ -1,3 +1,9 @@
 # react-todolist
 
-- 添加删除过滤待办事项
+```bash
+# 安装依赖
+npm install
+
+# 运行
+npm start
+```
